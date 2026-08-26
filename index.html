@@ -1102,7 +1102,19 @@ function saveState(){
     localStorage.setItem(STORE_KEY,JSON.stringify({
       MASTER, MONTH_ADHOC, DATE_OVERRIDES, PROGRESS, REMARKS,
       MASTER_SLA_OVERRIDE, MASTER_BLOCKED:[...MASTER_BLOCKED],
-      MONTH_HIDDEN, HISTORY, SAVED_VIEWS, DONE_AT, DS_ITEMS, ALL_IAS, BIRTHDAYS, savedAt:new Date().toISOString()
+      MONTH_HIDDEN, HISTORY, SAVED_VIEWS, DONE_AT, DS_ITEMS, ALL_IAS, BIRTHDAYS,
+      // Sync bookkeeping — lets a fresh page load tell whether these local
+      // edits were ever confirmed to the server, and which fields they touched.
+      _serverVersion,
+      _dirty:{
+        keys:{
+          PROGRESS:[..._dirtyKeys.PROGRESS], REMARKS:[..._dirtyKeys.REMARKS],
+          DATE_OVERRIDES:[..._dirtyKeys.DATE_OVERRIDES], MASTER_SLA_OVERRIDE:[..._dirtyKeys.MASTER_SLA_OVERRIDE],
+          DONE_AT:[..._dirtyKeys.DONE_AT], MONTH_HIDDEN:[..._dirtyKeys.MONTH_HIDDEN]
+        },
+        big:[..._dirtyBig]
+      },
+      savedAt:new Date().toISOString()
     }));
   }catch(e){console.warn('Save failed',e);}
   cloudSave();
@@ -1128,7 +1140,19 @@ function applyState(s){
 function loadState(){
   try{
     const raw=localStorage.getItem(STORE_KEY);
-    if(raw) applyState(JSON.parse(raw));
+    if(!raw) return;
+    const s=JSON.parse(raw);
+    applyState(s);
+    // Restore which fields were edited-but-not-yet-confirmed to the server, and
+    // the last server version we knew about. Without this, a reload forgets it
+    // had pending edits and the first cloud pull silently overwrites them.
+    if(typeof s._serverVersion==='number') _serverVersion=s._serverVersion;
+    if(s._dirty){
+      const dk=s._dirty.keys||{};
+      Object.keys(_dirtyKeys).forEach(coll=>{(dk[coll]||[]).forEach(k=>_dirtyKeys[coll].add(k));});
+      (s._dirty.big||[]).forEach(c=>_dirtyBig.add(c));
+      _localDirty=hasDirty();
+    }
   }catch(e){console.warn('Load failed',e);}
 }
 
@@ -1250,9 +1274,21 @@ async function cloudLoad(isPoll){
       if(dirtyNow) cloudSave();
       return;
     }
-    applyState(s);_serverVersion=remoteV;_lastEditor=s.editor||'';
-    renderAll();
-    const L=syncedLabel();setSync(L.msg,L.color,L.title);
+    if(hasDirty()){
+      // We loaded with edits that were never confirmed to the server (e.g. the
+      // page was refreshed right after a change). Keep those edits on top of
+      // whatever the server currently holds, then push them up — do NOT let the
+      // server's older copy overwrite them.
+      mergeServerIntoLocal(s);
+      _serverVersion=remoteV;_lastEditor=s.editor||'';
+      renderAll();
+      setSync('<i class="ti ti-refresh"></i> Restoring your edits…','var(--amb)','Re-sending changes that were saved on this device but not yet synced.');
+      cloudSave();
+    }else{
+      applyState(s);_serverVersion=remoteV;_lastEditor=s.editor||'';
+      renderAll();
+      const L=syncedLabel();setSync(L.msg,L.color,L.title);
+    }
   }catch(e){
     console.warn('Cloud load failed',e);
     setSync('<i class="ti ti-cloud-off"></i> Offline','var(--amb)','Working from your local copy. Edits are saved here and will sync when the connection returns.');
@@ -1281,7 +1317,16 @@ async function doCloudSave(isRetry){
   try{
     const payload=collectState();
     const res=await fetch(SHEETS_API_URL,{method:'POST',body:JSON.stringify(payload)});
-    const r=await res.json().catch(()=>({ok:true}));
+    let r=null;
+    try{ r=await res.json(); }catch(_){ r=null; }
+    // A genuine save always returns JSON with ok/version/conflict. Anything else
+    // — an HTML login/redirect page (wrong "Who has access", or an un-redeployed
+    // Web App), an empty body, a network hiccup — means the write did NOT land.
+    // Do NOT clear the dirty manifest in that case: keep the edit and retry, so a
+    // later reload can still re-push it instead of losing it to the server copy.
+    if(!r || (r.ok!==true && r.version==null && !r.conflict)){
+      throw new Error('Save not confirmed by server');
+    }
     if(r&&r.conflict){
       // Server moved ahead. Pull it, merge OUR dirty fields on top, save again.
       _serverVersion=Number(r.serverVersion)||_serverVersion;
@@ -1325,7 +1370,22 @@ function resetState(){
   localStorage.removeItem(STORE_KEY);
   location.reload();
 }
-window.addEventListener('beforeunload',saveState);
+// On refresh/close, the 900ms debounced cloud save never gets to run. Push the
+// current state out synchronously so an edit made moments before a reload isn't
+// stranded in localStorage (where the next cloud pull would overwrite it).
+function flushCloudBeacon(){
+  if(!cloudOn()||!hasDirty()) return;
+  try{
+    const payload=JSON.stringify(collectState());
+    if(navigator.sendBeacon){
+      navigator.sendBeacon(SHEETS_API_URL,new Blob([payload],{type:'text/plain;charset=UTF-8'}));
+    }else{
+      fetch(SHEETS_API_URL,{method:'POST',body:payload,keepalive:true});
+    }
+  }catch(e){}
+}
+window.addEventListener('beforeunload',()=>{saveState();flushCloudBeacon();});
+window.addEventListener('pagehide',flushCloudBeacon);
 
 const MONTHS_LONG=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const MONTHS_SHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
