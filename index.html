@@ -34,7 +34,31 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg0);color:var(--text0);min-height:100vh}
+header{background:rgba(255,255,255,.84);backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--border2);position:sticky;top:0;z-index:150}
+header .hdr-shell{max-width:1110px;margin:0 auto;padding:0 1.2rem;height:62px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+header .brand{display:flex;align-items:center;gap:11px;min-width:0}
+header .brand-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#2458E6,#5B33D6);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:15px;letter-spacing:-.5px;box-shadow:0 8px 18px rgba(36,88,230,.18)}
+header .brand-copy{min-width:0}
+header .brand-name{font-size:14px;font-weight:700;color:var(--text0);letter-spacing:-.2px;line-height:1.2;white-space:nowrap}
+header .brand-sub{font-size:10px;font-weight:600;color:var(--text2);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+header .hdr-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+header .hdr-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border:1px solid var(--border2);border-radius:999px;background:var(--bg1);color:var(--text1);font-size:11px;font-weight:600}
+header .theme-btn{width:32px;height:32px;border:1px solid var(--border2);background:var(--bg1);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text1);cursor:pointer;transition:all .14s}
+header .theme-btn:hover{background:var(--bg2);border-color:var(--border)}
 .shell{max-width:1110px;margin:0 auto;padding:1.5rem 1.2rem 4rem}
+.landing-hero{max-width:1110px;margin:1.2rem auto 1.2rem;padding:1.3rem 1.1rem 1.1rem;background:linear-gradient(135deg, rgba(36,88,230,.08), rgba(91,51,214,.04));border:1px solid var(--border2);border-radius:24px;box-shadow:var(--sh);display:grid;grid-template-columns:1.3fr .9fr;gap:1rem;align-items:center}
+.landing-copy{padding:.5rem .3rem}
+.landing-kicker{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);margin-bottom:.7rem}
+.landing-copy h1{font-size:clamp(2rem,3vw,3rem);line-height:1.05;letter-spacing:-.05em;margin-bottom:.8rem;color:var(--text0)}
+.landing-copy p{max-width:640px;font-size:15px;color:var(--text1);margin-bottom:1rem}
+.landing-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:1rem}
+.landing-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:11px;color:var(--text2)}
+.landing-meta span{display:inline-flex;align-items:center;gap:5px;background:var(--bg1);padding:6px 9px;border:1px solid var(--border2);border-radius:999px}
+.landing-panel{background:var(--bg1);border:1px solid var(--border2);border-radius:20px;padding:1rem;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem;box-shadow:var(--sh)}
+.mini-stat{background:var(--bg0);border:1px solid var(--border2);border-radius:14px;padding:.8rem .75rem}
+.mini-stat span{display:block;font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.4rem}
+.mini-stat strong{font-size:1.65rem;letter-spacing:-.06em;color:var(--text0)}
+.mini-stat small{display:block;margin-top:4px;font-size:11px;color:var(--text2)}
 .ph{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:1.25rem;flex-wrap:wrap}
 .month-eyebrow{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text2);margin-bottom:3px}
 .ptitle{font-size:21px;font-weight:700;color:var(--text0);display:flex;align-items:center;gap:9px}
@@ -443,23 +467,63 @@ html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="da
 </style>
 </head>
 <body>
-<header style="background:#FFFFFF;border-bottom:1px solid var(--border2);position:sticky;top:0;z-index:150">
-  <div style="max-width:1110px;margin:0 auto;padding:0 1.2rem;height:62px;display:flex;align-items:center;justify-content:space-between">
-    <div style="display:flex;align-items:center;gap:11px">
-      <div style="width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#2458E6,#5B33D6);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:15px;letter-spacing:-.5px">Z</div>
-      <div>
-        <div style="font-size:14px;font-weight:700;color:var(--text0);letter-spacing:-.2px;line-height:1.2">Zanroo Malaysia</div>
-        <div style="font-size:10px;font-weight:500;color:var(--text2);letter-spacing:.08em;text-transform:uppercase">Insights Analyst Team</div>
+<header>
+  <div class="hdr-shell">
+    <div class="brand" aria-label="Zanroo Malaysia Insights Analyst Team">
+      <div class="brand-mark">Z</div>
+      <div class="brand-copy">
+        <div class="brand-name">Zanroo Malaysia</div>
+        <div class="brand-sub">Insights Analyst Team</div>
       </div>
     </div>
-    <div style="display:flex;align-items:center;gap:14px">
+
+    <div class="hdr-actions">
+      <button class="btn" type="button" onclick="document.getElementById('main-content').scrollIntoView({behavior:'smooth'});"><i class="ti ti-layout-dashboard"></i> Dashboard</button>
       <button class="theme-btn" id="theme-toggle" aria-label="Switch colour theme" title="Switch theme"><i class="ti ti-moon" aria-hidden="true"></i></button>
-      <span style="font-size:11px;font-weight:500;display:inline-flex;align-items:center;gap:4px" id="sync-status" role="status" aria-live="polite"></span>
-      <span style="font-size:12px;color:var(--text2);font-weight:500" id="hdr-clock"></span>
-      
+      <span class="hdr-pill" id="sync-status" role="status" aria-live="polite"></span>
+      <span class="hdr-pill" id="hdr-clock"></span>
     </div>
   </div>
 </header>
+
+<div class="landing-hero">
+  <div class="landing-copy">
+    <div class="landing-kicker">Zanroo Malaysia · IA Team</div>
+    <h1>Deliverables, SLA health, and workload visibility in one place.</h1>
+    <p>Track reporting cycles, monitor deadlines, and keep the team aligned without spreadsheet chaos.</p>
+    <div class="landing-actions">
+      <button class="btn acc-btn" type="button" onclick="document.getElementById('main-content').scrollIntoView({behavior:'smooth'});">Open dashboard</button>
+      <button class="btn" type="button" onclick="document.getElementById('metrics-area').scrollIntoView({behavior:'smooth'});">View KPIs</button>
+    </div>
+    <div class="landing-meta">
+      <span><i class="ti ti-bolt"></i> Live SLA tracking</span>
+      <span><i class="ti ti-users"></i> Shared team updates</span>
+      <span><i class="ti ti-clock-hour-4"></i> Monthly reporting cycle</span>
+    </div>
+  </div>
+  <div class="landing-panel">
+    <div class="mini-stat">
+      <span>On track</span>
+      <strong>84%</strong>
+      <small>Healthy delivery pace</small>
+    </div>
+    <div class="mini-stat">
+      <span>Due soon</span>
+      <strong>12</strong>
+      <small>Within next 10 working days</small>
+    </div>
+    <div class="mini-stat">
+      <span>Blocked</span>
+      <strong>3</strong>
+      <small>Require attention</small>
+    </div>
+    <div class="mini-stat">
+      <span>Load</span>
+      <strong>74%</strong>
+      <small>Team capacity focus</small>
+    </div>
+  </div>
+</div>
 
 <div class="shell">
 <div class="ph">
