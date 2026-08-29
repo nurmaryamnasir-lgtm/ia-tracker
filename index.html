@@ -28,8 +28,8 @@
   --tea:#0A7D6E;--tea-bg:#E3F5F2;
   --orn:#B85C00;--orn-bg:#FEF0E0;
   --r:10px;--rs:6px;--rl:14px;
-  --sh:0 1px 3px rgba(11,27,51,.06),0 1px 2px rgba(11,27,51,.04);
-  --shm:0 8px 24px rgba(11,27,51,.09),0 2px 6px rgba(11,27,51,.05);
+  --sh:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --shm:0 8px 24px rgba(0,0,0,.09),0 2px 6px rgba(0,0,0,.05);
   font-family:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;font-size:14px;line-height:1.55;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -37,7 +37,7 @@ body{background:var(--bg0);color:var(--text0);min-height:100vh}
 header{background:rgba(255,255,255,.84);backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--border2);position:sticky;top:0;z-index:150}
 header .hdr-shell{max-width:1110px;margin:0 auto;padding:0 1.2rem;height:62px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
 header .brand{display:flex;align-items:center;gap:11px;min-width:0}
-header .brand-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#2458E6,#5B33D6);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:15px;letter-spacing:-.5px;box-shadow:0 8px 18px rgba(36,88,230,.18)}
+header .brand-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#2458E6,#5B33D6);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:15px;letter-spacing:-.5px}
 header .brand-copy{min-width:0}
 header .brand-name{font-size:14px;font-weight:700;color:var(--text0);letter-spacing:-.2px;line-height:1.2;white-space:nowrap}
 header .brand-sub{font-size:10px;font-weight:600;color:var(--text2);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
@@ -49,16 +49,22 @@ header .theme-btn:hover{background:var(--bg2);border-color:var(--border)}
 .landing-hero{max-width:1110px;margin:1.2rem auto 1.2rem;padding:1.3rem 1.1rem 1.1rem;background:linear-gradient(135deg, rgba(36,88,230,.08), rgba(91,51,214,.04));border:1px solid var(--border2);border-radius:24px;box-shadow:var(--sh);display:grid;grid-template-columns:1.3fr .9fr;gap:1rem;align-items:center}
 .landing-copy{padding:.5rem .3rem}
 .landing-kicker{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);margin-bottom:.7rem}
-.landing-copy h1{font-size:clamp(2rem,3vw,3rem);line-height:1.05;letter-spacing:-.05em;margin-bottom:.8rem;color:var(--text0)}
+.landing-copy h1{font-size:clamp(2rem,3vw,3rem);line-height:1.05;letter-spacing:-.03em;margin-bottom:.8rem;color:var(--text0)}
 .landing-copy p{max-width:640px;font-size:15px;color:var(--text1);margin-bottom:1rem}
 .landing-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:1rem}
 .landing-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:11px;color:var(--text2)}
 .landing-meta span{display:inline-flex;align-items:center;gap:5px;background:var(--bg1);padding:6px 9px;border:1px solid var(--border2);border-radius:999px}
-.landing-panel{background:var(--bg1);border:1px solid var(--border2);border-radius:20px;padding:1rem;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem;box-shadow:var(--sh)}
-.mini-stat{background:var(--bg0);border:1px solid var(--border2);border-radius:14px;padding:.8rem .75rem}
-.mini-stat span{display:block;font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.4rem}
-.mini-stat strong{font-size:1.65rem;letter-spacing:-.06em;color:var(--text0)}
-.mini-stat small{display:block;margin-top:4px;font-size:11px;color:var(--text2)}
+.landing-panel{background:var(--text0);color:#fff;border-radius:20px;padding:1.1rem 1.15rem;box-shadow:var(--sh);position:relative;overflow:hidden}
+.landing-panel::after{content:'';position:absolute;width:170px;height:170px;right:-80px;top:-90px;border:1px solid rgba(255,255,255,.14);border-radius:50%}
+.hero-panel-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;color:rgba(255,255,255,.7);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hero-panel-head i{color:#9BB8FF;font-size:18px}
+.hero-panel-title{font-size:1.4rem;line-height:1.15;letter-spacing:-.02em;font-weight:650;margin:1.1rem 0 1rem;max-width:280px}
+.hero-checks{display:grid;gap:.7rem}
+.hero-check{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.86);font-size:12px}
+.hero-check i{color:#79D7A4;font-size:16px}
+.hero-panel-foot{display:flex;align-items:center;gap:7px;border-top:1px solid rgba(255,255,255,.14);margin-top:1.1rem;padding-top:.8rem;color:rgba(255,255,255,.62);font-size:10px}
+.hero-live-dot{width:7px;height:7px;border-radius:50%;background:#79D7A4;box-shadow:0 0 0 3px rgba(121,215,164,.14)}
+@media(max-width:760px){.landing-hero{grid-template-columns:1fr}.landing-panel{min-height:0}}
 .ph{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:1.25rem;flex-wrap:wrap}
 .month-eyebrow{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text2);margin-bottom:3px}
 .ptitle{font-size:21px;font-weight:700;color:var(--text0);display:flex;align-items:center;gap:9px}
@@ -89,6 +95,10 @@ header .theme-btn:hover{background:var(--bg2);border-color:var(--border)}
 .btn:hover{background:var(--bg2);color:var(--text0)}
 .btn.grn-btn{background:var(--grn);color:#fff;border-color:var(--grn)}.btn.grn-btn:hover{opacity:.9}
 .btn.acc-btn{background:var(--acc);color:#fff;border-color:var(--acc)}.btn.acc-btn:hover{opacity:.9}
+.fld-error{display:none;color:var(--red);font-size:11px;margin-top:4px}
+.fld.has-error input,.fld.has-error select,.fld.has-error textarea{border-color:var(--red);box-shadow:0 0 0 2px var(--red-bg)}
+.fld.has-error .fld-error{display:block}
+.sla-note{font-size:11px;color:var(--text2);margin-top:-3px;margin-bottom:10px}
 .dday{margin-bottom:1.1rem}
 .dhead{display:flex;align-items:center;gap:8px;margin-bottom:.45rem;flex-wrap:wrap}
 .dpill{font-size:13px;font-weight:600;background:var(--bg1);border:0.5px solid var(--border);border-radius:var(--rs);padding:4px 11px;display:inline-flex;align-items:center;gap:5px;box-shadow:var(--sh)}
@@ -107,9 +117,7 @@ header .theme-btn:hover{background:var(--bg2);border-color:var(--border)}
 .card.is-done .cbrand{opacity:.65}
 .proj-table tr.done-row td{background:var(--bg2)}
 .proj-table tr.done-row td.name-cell{text-decoration:line-through;color:var(--text2)}
-.card.q-card{border-left:3px solid #8E1C86}
-.card.hn-card{border-left:3px solid var(--orn)}
-.card.adhoc-card{border-left:3px solid var(--grn)}
+.card.q-card,.card.hn-card,.card.adhoc-card{border-left:1px solid var(--border2)}
 .ctop{display:flex;align-items:flex-start;justify-content:space-between;gap:5px;margin-bottom:5px}
 .cbrand{display:inline-block;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700}
 .cfreq{font-size:10px;font-weight:500;padding:2px 7px;border-radius:20px;white-space:nowrap}
@@ -419,7 +427,7 @@ html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="da
 
 /* ── Undo toast ── */
 .toast-wrap{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:400;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none}
-.toast{background:var(--text0);color:#fff;border-radius:24px;padding:10px 12px 10px 18px;font-size:13px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 28px rgba(11,27,51,.28);pointer-events:auto;animation:toastIn .18s ease-out;max-width:92vw}
+.toast{background:var(--text0);color:#fff;border-radius:24px;padding:10px 12px 10px 18px;font-size:13px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 28px rgba(0,0,0,.28);pointer-events:auto;animation:toastIn .18s ease-out;max-width:92vw}
 @keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .toast.leaving{animation:toastOut .18s ease-in forwards}
 @keyframes toastOut{to{opacity:0;transform:translateY(10px)}}
@@ -502,30 +510,18 @@ html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="da
     </div>
   </div>
   <div class="landing-panel">
-    <div class="mini-stat">
-      <span>On track</span>
-      <strong>84%</strong>
-      <small>Healthy delivery pace</small>
+    <div class="hero-panel-head"><span>Workspace pulse</span><i class="ti ti-chart-dots-3"></i></div>
+    <div class="hero-panel-title">A clearer monthly handoff for the whole team.</div>
+    <div class="hero-checks">
+      <div class="hero-check"><i class="ti ti-circle-check"></i><span>Deadlines and SLA rules stay visible</span></div>
+      <div class="hero-check"><i class="ti ti-circle-check"></i><span>Ownership and blockers stay actionable</span></div>
+      <div class="hero-check"><i class="ti ti-circle-check"></i><span>Shared edits stay in sync</span></div>
     </div>
-    <div class="mini-stat">
-      <span>Due soon</span>
-      <strong>12</strong>
-      <small>Within next 10 working days</small>
-    </div>
-    <div class="mini-stat">
-      <span>Blocked</span>
-      <strong>3</strong>
-      <small>Require attention</small>
-    </div>
-    <div class="mini-stat">
-      <span>Load</span>
-      <strong>74%</strong>
-      <small>Team capacity focus</small>
-    </div>
+    <div class="hero-panel-foot"><span class="hero-live-dot"></span><span>Live workspace status appears in the header</span></div>
   </div>
 </div>
 
-<div class="shell">
+<main class="shell">
 <div class="ph">
   <div>
     <div class="month-eyebrow">IA Team Reporting Cycle</div>
@@ -548,19 +544,19 @@ html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="da
     <button class="btn grn-btn" id="add-adhoc-btn"><i class="ti ti-plus"></i> Add adhoc</button>
   </div>
 </div>
-<div id="ph-notice-area"></div>
-<div id="metrics-area"></div>
-<div class="frow" id="filter-area"></div>
+<section id="ph-notice-area" aria-label="Public holiday notices"></section>
+<section id="metrics-area" aria-label="Reporting metrics"></section>
+<section class="frow" id="filter-area" aria-label="Dashboard filters"></section>
 <div class="chip-row" id="chip-area" role="region" aria-label="Active filters"></div>
 <div id="sv-area"></div>
-<div id="main-content"></div>
-</div>
+<section id="main-content" aria-label="Dashboard workspace"></section>
+</main>
 
 <div class="toast-wrap" id="toast-wrap"></div>
 
 <!-- Spotlight modal -->
 <div class="spotlight-overlay" id="spotlight-overlay">
-<div class="spotlight-modal" id="spotlight-modal">
+<div class="spotlight-modal" id="spotlight-modal" role="dialog" aria-modal="true" aria-labelledby="spm-title">
   <div class="spm-head">
     <div class="spm-title" id="spm-title"></div>
     <button class="spm-close" id="spm-close" aria-label="Close deliverable details"><i class="ti ti-x" aria-hidden="true"></i></button>
@@ -586,25 +582,27 @@ html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="da
 
 <!-- Adhoc modal -->
 <div class="overlay" id="adhoc-overlay">
-<div class="modal">
-  <h2><i class="ti ti-plus" style="color:var(--grn)"></i> Add adhoc deliverable</h2>
+<div class="modal" role="dialog" aria-modal="true" aria-labelledby="adhoc-title">
+  <h2 id="adhoc-title"><i class="ti ti-plus" style="color:var(--grn)"></i> Add adhoc deliverable</h2>
   <div class="f2">
-    <div class="fld"><label>Brand / Project</label>
+    <div class="fld" data-field="ah-brand"><label>Brand / Project</label>
       <select id="ah-brand-sel"></select>
       <input id="ah-brand" placeholder="Type new project name…" style="display:none;margin-top:6px">
+      <div class="fld-error">Choose or enter a project.</div>
     </div>
     <div class="fld"><label>IA in charge</label><select id="ah-ia"></select></div>
   </div>
-  <div class="fld"><label>Deliverable name</label><input id="ah-name" placeholder="e.g. Campaign analysis"></div>
+  <div class="fld" data-field="ah-name"><label>Deliverable name</label><input id="ah-name" maxlength="160" aria-describedby="ah-name-error" placeholder="e.g. Campaign analysis"><div class="fld-error" id="ah-name-error" role="alert">Enter a deliverable name.</div></div>
   <div class="f2">
-    <div class="fld"><label>Due date</label><input type="date" id="ah-date"></div>
+    <div class="fld" data-field="ah-date"><label>Due date</label><input type="date" id="ah-date" aria-describedby="ah-date-error"><div class="fld-error" id="ah-date-error" role="alert">Choose a due date.</div></div>
     <div class="fld"><label>CS lead</label>
       <select id="ah-cs-sel"></select>
       <input id="ah-cs" placeholder="Type new CS name…" style="display:none;margin-top:6px">
+      <div class="sla-note" style="margin-top:3px">The Customer Success Lead associated with this deliverable.</div>
     </div>
   </div>
   <div class="f2">
-    <div class="fld"><label>SLA</label><input id="ah-sla" placeholder="e.g. 3 WDs"></div>
+    <div class="fld"><label>SLA</label><input id="ah-sla" placeholder="e.g. 3 WDs"><div class="sla-note" style="margin-top:3px">Service level agreement: when this deliverable is due (e.g., "3 WDs" = 3 working days after month start).</div></div>
     <div class="fld"><label>Region</label><select id="ah-region"><option>MY</option><option>SG</option></select></div>
   </div>
   <div class="fld"><label>Remarks</label><textarea id="ah-note"></textarea></div>
@@ -614,24 +612,26 @@ html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="da
 
 <!-- Add project modal -->
 <div class="overlay" id="proj-overlay">
-<div class="modal" style="width:520px">
-  <h2><i class="ti ti-folder-plus" style="color:var(--acc)"></i> Add project / deliverable</h2>
+<div class="modal" style="width:520px" role="dialog" aria-modal="true" aria-labelledby="project-title">
+  <h2 id="project-title"><i class="ti ti-folder-plus" style="color:var(--acc)"></i> Add project / deliverable</h2>
   <div style="font-size:12px;color:var(--text2);margin-bottom:12px;background:var(--bg2);padding:8px 10px;border-radius:var(--rs)">This deliverable will appear in Deadlines and Calendar for every month going forward.</div>
   <hr class="divider">
   <div class="f2">
-    <div class="fld"><label>Brand / Project</label>
+    <div class="fld" data-field="np-brand"><label>Brand / Project</label>
       <select id="np-brand-sel"></select>
       <input id="np-brand" placeholder="Type new project name…" style="display:none;margin-top:6px">
+      <div class="fld-error">Choose or enter a project.</div>
     </div>
     <div class="fld"><label>CS lead</label>
       <select id="np-cs-sel"></select>
       <input id="np-cs" placeholder="Type new CS name…" style="display:none;margin-top:6px">
     </div>
   </div>
-  <div class="fld"><label>Deliverable name</label><input id="np-name" placeholder="e.g. Monthly Brand Health Report"></div>
+  <div class="fld" data-field="np-name"><label>Deliverable name</label><input id="np-name" maxlength="160" aria-describedby="np-name-error" placeholder="e.g. Monthly Brand Health Report"><div class="fld-error" id="np-name-error" role="alert">Enter a deliverable name.</div></div>
   <div class="f2">
     <div class="fld"><label>Frequency</label>
       <select id="np-freq"><option>Monthly</option><option>Daily</option><option>Weekly</option><option>Bi-Weekly</option><option>Quarterly</option><option>Half Yearly</option><option>Adhoc</option></select>
+      <div class="sla-note">How often this deliverable recurs. Quarterly = Jan/Apr/Jul/Oct; Half Yearly = Jan/Jul.</div>
     </div>
     <div class="fld"><label>SLA rule</label>
       <select id="np-sla-type">
@@ -650,12 +650,13 @@ html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="da
     <div class="fld"><label id="np-sla-n-lbl">N (working day #)</label><input type="number" id="np-sla-n" min="1" max="31" value="10"></div>
     <div class="fld"></div>
   </div>
+  <div class="sla-note" id="np-sla-note">Custom / manual SLA is allowed without a computable due date.</div>
   <div class="f2">
     <div class="fld"><label>IA in charge</label><select id="np-ia"></select></div>
     <div class="fld"><label>Region</label><select id="np-region"><option>MY</option><option>SG</option></select></div>
   </div>
   <div class="f2">
-    <div class="fld"><label>Starts from <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text3)">— first month it's due</span></label><input type="month" id="np-start"></div>
+    <div class="fld"><label>Starts from <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text3)">— first month it's due</span></label><input type="month" id="np-start"><div class="sla-note">Leave blank to show in all future months. The deliverable will not appear before this date.</div></div>
     <div class="fld"><label>Quarterly months (if applicable)</label>
       <select id="np-q-months">
         <option value="none">Not quarterly</option>
@@ -1251,6 +1252,7 @@ async function cloudLoad(isPoll){
   if(!isPoll) setSync('<i class="ti ti-refresh"></i> Syncing…');
   try{
     const res=await fetch(SHEETS_API_URL+'?t='+Date.now());
+    if(!res.ok) throw new Error(`Load failed (${res.status})`);
     const s=await res.json();
     if(!s||!Object.keys(s).length){ // empty sheet: seed it with our defaults
       _serverVersion=0;const L=syncedLabel();setSync(L.msg,L.color,L.title);
@@ -1317,6 +1319,7 @@ async function doCloudSave(isRetry){
   try{
     const payload=collectState();
     const res=await fetch(SHEETS_API_URL,{method:'POST',body:JSON.stringify(payload)});
+    if(!res.ok) throw new Error(`Save failed (${res.status})`);
     let r=null;
     try{ r=await res.json(); }catch(_){ r=null; }
     // A genuine save always returns JSON with ok/version/conflict. Anything else
@@ -1914,6 +1917,7 @@ function renderDeadlines(){
       <option value="">Reassign to…</option>
       ${ALL_IAS.map(a=>`<option>${a}</option>`).join('')}
     </select>
+    <span style="font-size:11px;color:var(--text2);margin-bottom:8px;display:block"><i class="ti ti-info-circle" style="font-size:11px;vertical-align:-1px"></i> <strong>Remove from month:</strong> Hide selected items from this month's Deadlines view. They remain in the master list and can be restored. To permanently delete, use the trash icon.</span>
     <button class="bulk-btn" id="bulk-remove"><i class="ti ti-trash" aria-hidden="true"></i> Remove from month</button>
     <button class="bulk-btn" id="bulk-clear" style="margin-left:auto">Clear selection</button>
   </div>`:'';
@@ -2001,7 +2005,7 @@ function renderProjects(){
           </select>
         </td>
         <td data-lbl="SLA" style="width:130px"><input type="text" class="inline-input proj-sla-inp" data-id="${it.id}" value="${slaDisplay.replace(/"/g,'&quot;')}" placeholder="SLA…"></td>
-        <td data-lbl="Due" style="width:135px">${it.date?`<input type="date" class="inline-input proj-date-inp" data-id="${it.id}" value="${it.date}" title="Edit due date (overrides SLA for this month)">`:`<span style="font-size:10px;color:var(--text3)">not this month</span>`}</td>
+        <td data-lbl="Due" style="width:135px">${it.date?`<input type="date" class="inline-input proj-date-inp" data-id="${it.id}" value="${it.date}" title="Edit due date (overrides SLA for this month)">`:it.slaType==='custom'?`<span style="font-size:10px;color:var(--text3)">manual date</span>`:`<span style="font-size:10px;color:var(--text3)">not this month</span>`}</td>
         <td data-lbl="Status" style="width:100px">
           <select class="inline-sel proj-status-sel" data-id="${it.id}">
             ${['To Do','In Progress','Done','Blocked'].map(s=>`<option${s===pg?' selected':''}>${s}</option>`).join('')}
@@ -2050,7 +2054,11 @@ function renderProjects(){
       </div>
       <button class="btn acc-btn" id="open-proj-modal"><i class="ti ti-folder-plus"></i> Add project / deliverable</button>
     </div>
-    <div style="font-size:11px;color:var(--text2);margin-bottom:.75rem"><i class="ti ti-info-circle" style="font-size:11px;vertical-align:-1px"></i> Editing IA, SLA or Status here updates the master record. <span style="color:var(--red)">Blocked deliverables are excluded from the Deadlines view.</span></div>
+      <div style="font-size:11px;color:var(--text2);margin-bottom:.75rem">
+        <div style="margin-bottom:6px"><i class="ti ti-info-circle" style="font-size:11px;vertical-align:-1px"></i> Editing IA, SLA or Status here updates the master record. <span style="color:var(--red)">Blocked is global across all months and excludes the deliverable from Deadlines.</span></div>
+        <div style="margin-bottom:6px"><strong>Legend:</strong> <span style="background:var(--pur-bg);color:var(--pur);padding:2px 6px;border-radius:3px;font-size:10px;font-weight:600">Quarterly</span> = Jan/Apr/Jul/Oct; <span style="background:var(--orn-bg);color:var(--orn);padding:2px 6px;border-radius:3px;font-size:10px;font-weight:600">Half Yearly</span> = Jan/Jul</div>
+        <div><strong>Abbreviations:</strong> IA = Insights Analyst; CS = Customer Success Lead; DA sub = Data submission item; WD = working day; SLA = Service Level Agreement; TBC = To Be Confirmed</div>
+      </div>
     ${html||'<div class="empty-msg">No deliverables for this IA</div>'}
     <nav class="alpha-rail" aria-label="Jump to project by letter">
       <button class="alpha-top" id="alpha-top-btn" title="Back to top" aria-label="Scroll back to top"><i class="ti ti-arrow-up" aria-hidden="true"></i></button>
@@ -2185,21 +2193,21 @@ function openSpotlight(id){
     <div class="spm-field"><label>CS lead</label><div class="val" style="font-size:13px;padding:7px 0">${it.cs}</div></div>
     <div class="spm-field"><label>Frequency</label><select id="spm-freq">${['Daily','Weekly','Bi-Weekly','Monthly','Quarterly','Half Yearly','Adhoc'].map(f=>`<option${f===it.freq?' selected':''}>${f}</option>`).join('')}</select></div>
     <div class="spm-field"><label>Region</label><select id="spm-region"><option${regionOf(it)==='MY'?' selected':''}>MY</option><option${regionOf(it)==='SG'?' selected':''}>SG</option></select></div>
-    ${!it.adhoc?`<div class="spm-field"><label>Starts from <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text3)">— blank = always</span></label><input type="month" id="spm-start" value="${it.startMonth||''}"></div>`:''}
+    ${!it.adhoc?`<div class="spm-field"><label>Starts from <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text3)">— blank = always</span></label><input type="month" id="spm-start" value="${it.startMonth||''}"><div style="font-size:10px;color:var(--text2);margin-top:3px">Leave blank for recurring; set a month to start this deliverable from that date forward.</div></div>`:''}
     <div class="spm-field"><label>SLA <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text3)">— e.g. 10 WDs · 15th · 1st of month · Monday</span></label><input id="spm-sla" value="${slaDisplay.replace(/"/g,'&quot;')}" placeholder="e.g. 10 WDs"></div>
-    <div class="spm-field"><label>Due date (this month)</label><div class="val" style="font-size:13px;padding:7px 0;font-family:'Consolas','Segoe UI',monospace">${fmtDate(it.date)||'—'}</div></div>`;
+    <div class="spm-field"><label>Due date (this month)</label><div class="val" style="font-size:13px;padding:7px 0;font-family:'Consolas','Segoe UI',monospace">${fmtDate(it.date)||(it.slaType==='custom'?'Manual date':'—')}</div></div>`;
   document.getElementById('spm-remarks').value=rmk;
-  document.getElementById('spotlight-overlay').classList.add('open');
+  openModal('spotlight-overlay');
 }
 document.getElementById('spm-dup').addEventListener('click',()=>{
   if(!spotlightId) return;
   const id=spotlightId;
-  document.getElementById('spotlight-overlay').classList.remove('open');
+  closeModal('spotlight-overlay');
   spotlightId=null;
   duplicateItem(id);
 });
-document.getElementById('spm-close').addEventListener('click',()=>{document.getElementById('spotlight-overlay').classList.remove('open');spotlightId=null;});
-document.getElementById('spotlight-overlay').addEventListener('click',e=>{if(e.target===document.getElementById('spotlight-overlay')){document.getElementById('spotlight-overlay').classList.remove('open');spotlightId=null;}});
+document.getElementById('spm-close').addEventListener('click',()=>{closeModal('spotlight-overlay');spotlightId=null;});
+document.getElementById('spotlight-overlay').addEventListener('click',e=>{if(e.target===document.getElementById('spotlight-overlay')){closeModal('spotlight-overlay');spotlightId=null;}});
 document.getElementById('spm-save').addEventListener('click',()=>{
   if(!spotlightId) return;
   const m=findRecord(spotlightId);
@@ -2221,7 +2229,7 @@ document.getElementById('spm-save').addEventListener('click',()=>{
     if(startEl){ const sv=startEl.value.trim(); if(sv) m.startMonth=sv; else delete m.startMonth; }
   }
   setRemarks(spotlightId,document.getElementById('spm-remarks').value);
-  document.getElementById('spotlight-overlay').classList.remove('open');
+  closeModal('spotlight-overlay');
   spotlightId=null;
   renderAll();
 });
@@ -2374,7 +2382,7 @@ function renderCalendar(){
     <select id="cal-ia" style="font-size:12px;padding:4px 9px;border:0.5px solid var(--border);border-radius:var(--rs);background:var(--bg1);color:var(--text0);height:28px;font-family:inherit">
       <option value="All">All IAs</option>${allIAsNow.map(a=>`<option${filterIA===a?' selected':''}>${a}</option>`).join('')}
     </select>
-    <span style="font-size:11px;color:var(--text2)">Click a date to expand · ★ Quarterly · ♦ Biannual · <span style="color:var(--orn)">↳ DA sub</span></span>
+    <span style="font-size:11px;color:var(--text2)">Click a date to expand · <span style="background:var(--pur-bg);color:var(--pur);padding:2px 6px;border-radius:3px;font-weight:600;display:inline-block;font-size:10px">Quarterly</span> <span style="background:var(--orn-bg);color:var(--orn);padding:2px 6px;border-radius:3px;font-weight:600;display:inline-block;font-size:10px">Half Yearly</span> <span style="color:var(--orn)">↳ Data submission</span></span>
   </div>
   ${bdaysInMonth(viewMonth+1).length?`<div style="background:#FDE7F3;border:0.5px solid #F0A9CE;border-radius:var(--rs);padding:7px 12px;font-size:11px;color:#A3176B;margin-bottom:.7rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap"><strong>🎂 Birthdays this month:</strong> ${bdaysInMonth(viewMonth+1).map(b=>`${b.name} — ${b.d} ${MONTHS_SHORT[viewMonth]}`).join(' · ')}</div>`:''}
   <div class="cal-grid">${hdrs}${cells}</div>
@@ -2382,7 +2390,7 @@ function renderCalendar(){
     <div class="li"><div class="ld" style="background:var(--acc-bg);border:0.5px solid var(--acc)50"></div>WD10</div>
     <div class="li"><div class="ld" style="background:#FEF0CC;border:0.5px solid #E8C870"></div>Public holiday</div>
     <div class="li"><div class="ld" style="background:#FDE7F3;border:0.5px solid #F0A9CE"></div>🎂 Birthday</div>
-    <div class="li"><div class="ld" style="background:var(--pur-bg);border:0.5px solid var(--pur)50"></div>Quarterly ★</div>
+    <div class="li"><div class="ld" style="background:var(--pur-bg);border:0.5px solid var(--pur)50"></div>Quarterly (Jan/Apr/Jul/Oct)</div>
     <div class="li"><div class="ld" style="background:var(--orn-bg);border:0.5px solid var(--orn)50"></div>Biannual ♦</div>
     <div class="li"><div class="ld" style="background:#FBF0E4;border:0.5px solid #E0A06060"></div>DA sub</div>
     <div class="li"><div class="ld" style="background:var(--bg2)"></div>Weekend</div>
@@ -2474,6 +2482,36 @@ function setupPickers(selBrand,inpBrand,selCS,inpCS){
   cSel.onchange=()=>{cInp.style.display=cSel.value==='__new__'?'block':'none';if(cSel.value==='__new__') cInp.focus();};
 }
 
+let lastModalTrigger=null;
+function openModal(id){
+  lastModalTrigger=document.activeElement;
+  const overlay=document.getElementById(id);
+  overlay.classList.add('open');
+  const first=overlay.querySelector('input,select,textarea,button');
+  if(first) setTimeout(()=>first.focus(),0);
+}
+function closeModal(id){
+  document.getElementById(id).classList.remove('open');
+  if(lastModalTrigger&&typeof lastModalTrigger.focus==='function') lastModalTrigger.focus();
+  lastModalTrigger=null;
+}
+function clearFieldErrors(ids){ids.forEach(id=>{const field=document.querySelector(`[data-field="${id}"]`);if(field){field.classList.remove('has-error');field.querySelector('input,select,textarea')?.removeAttribute('aria-invalid');}});}
+function validateFields(fields){
+  let first=null;
+  fields.forEach(({id,value,message})=>{
+    const field=document.querySelector(`[data-field="${id}"]`);
+    if(!field) return;
+    field.classList.toggle('has-error',!value);
+    const control=field.querySelector('input,select,textarea');
+    if(control) control.toggleAttribute('aria-invalid',!value);
+    const error=field.querySelector('.fld-error');
+    if(error&&message) error.textContent=message;
+    if(!value&&!first) first=field.querySelector('input,select,textarea');
+  });
+  if(first) first.focus();
+  return !first;
+}
+
 function openProjModal(presetBrand){
   ['np-brand','np-cs','np-name','np-note'].forEach(id=>{document.getElementById(id).value='';});
   setupPickers('np-brand-sel','np-brand','np-cs-sel','np-cs');
@@ -2488,7 +2526,7 @@ function openProjModal(presetBrand){
   }
   const dateStr=`${viewYear}-${String(viewMonth+1).padStart(2,'0')}-14`;
   document.getElementById('np-ia').innerHTML=ALL_IAS.map(a=>`<option>${a}</option>`).join('');
-  document.getElementById('proj-overlay').classList.add('open');
+  openModal('proj-overlay');
   document.getElementById('np-sla-type').addEventListener('change',e=>{
     const v=e.target.value;const extra=document.getElementById('np-sla-extra');
     const lbl=document.getElementById('np-sla-n-lbl');
@@ -2497,8 +2535,8 @@ function openProjModal(presetBrand){
     else {extra.style.display='none';}
   },{once:true});
 }
-document.getElementById('np-cancel').addEventListener('click',()=>document.getElementById('proj-overlay').classList.remove('open'));
-document.getElementById('proj-overlay').addEventListener('click',e=>{if(e.target===document.getElementById('proj-overlay')) document.getElementById('proj-overlay').classList.remove('open');});
+document.getElementById('np-cancel').addEventListener('click',()=>closeModal('proj-overlay'));
+document.getElementById('proj-overlay').addEventListener('click',e=>{if(e.target===document.getElementById('proj-overlay')) closeModal('proj-overlay');});
 document.getElementById('np-sla-type').addEventListener('change',e=>{
   const v=e.target.value;const extra=document.getElementById('np-sla-extra');
   const lbl=document.getElementById('np-sla-n-lbl');
@@ -2509,7 +2547,8 @@ document.getElementById('np-sla-type').addEventListener('change',e=>{
 document.getElementById('np-save').addEventListener('click',()=>{
   const brand=pickVal('np-brand-sel','np-brand');
   const name=document.getElementById('np-name').value.trim();
-  if(!brand||!name) return;
+  clearFieldErrors(['np-brand','np-name']);
+  if(!validateFields([{id:'np-brand',value:brand},{id:'np-name',value:name}])) return;
   const stType=document.getElementById('np-sla-type').value;
   const stN=document.getElementById('np-sla-n').value;
   let slaType=stType;let slaLabel='';
@@ -2531,7 +2570,7 @@ document.getElementById('np-save').addEventListener('click',()=>{
   markDirty('MASTER');
   MASTER.push(newM);
   if(!BRAND_COLORS[brand]) BRAND_COLORS[brand]=COLOR_PAL[Object.keys(BRAND_COLORS).length%COLOR_PAL.length];
-  document.getElementById('proj-overlay').classList.remove('open');
+  closeModal('proj-overlay');
   renderAll();
 });
 
@@ -2543,22 +2582,23 @@ document.getElementById('add-adhoc-btn').addEventListener('click',()=>{
   document.getElementById('ah-date').min=`${viewYear}-${String(viewMonth+1).padStart(2,'0')}-01`;
   document.getElementById('ah-date').max=`${viewYear}-${String(viewMonth+1).padStart(2,'0')}-${new Date(viewYear,viewMonth+1,0).getDate()}`;
   document.getElementById('ah-ia').innerHTML=ALL_IAS.map(a=>`<option>${a}</option>`).join('');
-  document.getElementById('adhoc-overlay').classList.add('open');
+  openModal('adhoc-overlay');
 });
-document.getElementById('ah-cancel').addEventListener('click',()=>document.getElementById('adhoc-overlay').classList.remove('open'));
-document.getElementById('adhoc-overlay').addEventListener('click',e=>{if(e.target===document.getElementById('adhoc-overlay')) document.getElementById('adhoc-overlay').classList.remove('open');});
+document.getElementById('ah-cancel').addEventListener('click',()=>closeModal('adhoc-overlay'));
+document.getElementById('adhoc-overlay').addEventListener('click',e=>{if(e.target===document.getElementById('adhoc-overlay')) closeModal('adhoc-overlay');});
 document.getElementById('ah-save').addEventListener('click',()=>{
   const name=document.getElementById('ah-name').value.trim();
   const brand=pickVal('ah-brand-sel','ah-brand');
   const date=document.getElementById('ah-date').value;
-  if(!name||!brand||!date) return;
+  clearFieldErrors(['ah-brand','ah-name','ah-date']);
+  if(!validateFields([{id:'ah-brand',value:brand},{id:'ah-name',value:name},{id:'ah-date',value:date}])) return;
   const id=uid('ah');
   const mk=monthKey();
   markDirty('MONTH_ADHOC');
   if(!MONTH_ADHOC[mk]) MONTH_ADHOC[mk]=[];
   MONTH_ADHOC[mk].push({id,brand,name,freq:'Adhoc',ia:document.getElementById('ah-ia').value,cs:pickVal('ah-cs-sel','ah-cs')||'—',date,slaLabel:document.getElementById('ah-sla').value||'Ad-hoc',note:document.getElementById('ah-note').value.trim(),adhoc:true,region:document.getElementById('ah-region').value});
   if(!BRAND_COLORS[brand]) BRAND_COLORS[brand]=COLOR_PAL[Object.keys(BRAND_COLORS).length%COLOR_PAL.length];
-  document.getElementById('adhoc-overlay').classList.remove('open');
+  closeModal('adhoc-overlay');
   renderAll();
 });
 
@@ -2574,13 +2614,23 @@ function buildMonthYearSelectors(){
   ySel.addEventListener('change',e=>{viewYear=parseInt(e.target.value);selectedCalDay=null;renderAll();});
 }
 document.addEventListener('keydown',e=>{
+  const activeModal=document.querySelector('.overlay.open,.spotlight-overlay.open');
+  if(activeModal&&e.key==='Tab'){
+    const focusable=[...activeModal.querySelectorAll('button,input,select,textarea,[tabindex]:not([tabindex="-1"])')].filter(el=>!el.disabled&&el.offsetParent!==null);
+    if(focusable.length){
+      const first=focusable[0],last=focusable[focusable.length-1];
+      if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+      else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+    }
+    return;
+  }
   if(e.key!=='Escape') return;
   const sp=document.getElementById('spotlight-overlay');
   const ad=document.getElementById('adhoc-overlay');
   const pr=document.getElementById('proj-overlay');
-  if(sp&&sp.classList.contains('open')){sp.classList.remove('open');spotlightId=null;return;}
-  if(ad&&ad.classList.contains('open')){ad.classList.remove('open');return;}
-  if(pr&&pr.classList.contains('open')){pr.classList.remove('open');return;}
+  if(sp&&sp.classList.contains('open')){closeModal('spotlight-overlay');spotlightId=null;return;}
+  if(ad&&ad.classList.contains('open')){closeModal('adhoc-overlay');return;}
+  if(pr&&pr.classList.contains('open')){closeModal('proj-overlay');return;}
   if(selectedCalDay!==null&&currentView==='calendar'){deselectDay();}
 });
 document.getElementById('prev-month').addEventListener('click',()=>{viewMonth--;if(viewMonth<0){viewMonth=11;viewYear--;}selectedCalDay=null;SELECTED.clear();renderAll();});
@@ -2634,6 +2684,7 @@ window.removeFromMonth=function(id){
   const isAdhoc=!!rec.adhoc;
   const name=rec.name;
   const mk=monthKey();
+  if(!confirm(`Remove ${name} from ${MONTHS_LONG[viewMonth]}? This changes its visibility for the current month and can be undone.`)) return;
   let snapshot=null;
   if(isAdhoc){
     snapshot=JSON.parse(JSON.stringify(MONTH_ADHOC[mk]||[]));
