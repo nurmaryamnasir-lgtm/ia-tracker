@@ -51,10 +51,9 @@ header .theme-btn:hover{background:var(--bg2);border-color:var(--border)}
 .landing-kicker{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);margin-bottom:.7rem}
 .landing-copy h1{font-size:clamp(2rem,3vw,3rem);line-height:1.05;letter-spacing:-.03em;margin-bottom:.8rem;color:var(--text0)}
 .landing-copy p{max-width:640px;font-size:15px;color:var(--text1);margin-bottom:1rem}
-.landing-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:1rem}
 .landing-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:11px;color:var(--text2)}
 .landing-meta span{display:inline-flex;align-items:center;gap:5px;background:var(--bg1);padding:6px 9px;border:1px solid var(--border2);border-radius:999px}
-.landing-panel{background:var(--text0);color:#fff;border-radius:20px;padding:1.1rem 1.15rem;box-shadow:var(--sh);position:relative;overflow:hidden}
+.landing-panel{background:#0B1B33;color:#fff;border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:1.1rem 1.15rem;box-shadow:var(--sh);position:relative;overflow:hidden}
 .landing-panel::after{content:'';position:absolute;width:170px;height:170px;right:-80px;top:-90px;border:1px solid rgba(255,255,255,.14);border-radius:50%}
 .hero-panel-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;color:rgba(255,255,255,.7);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
 .hero-panel-head i{color:#9BB8FF;font-size:18px}
@@ -499,10 +498,6 @@ html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="da
     <div class="landing-kicker">Zanroo Malaysia · IA Team</div>
     <h1>Deliverables, SLA health, and workload visibility in one place.</h1>
     <p>Track reporting cycles, monitor deadlines, and keep the team aligned without spreadsheet chaos.</p>
-    <div class="landing-actions">
-      <button class="btn acc-btn" type="button" onclick="document.getElementById('main-content').scrollIntoView({behavior:'smooth'});">Open dashboard</button>
-      <button class="btn" type="button" onclick="document.getElementById('metrics-area').scrollIntoView({behavior:'smooth'});">View KPIs</button>
-    </div>
     <div class="landing-meta">
       <span><i class="ti ti-bolt"></i> Live SLA tracking</span>
       <span><i class="ti ti-users"></i> Shared team updates</span>
@@ -1267,6 +1262,7 @@ async function cloudLoad(isPoll){
       const dirtyNow=hasDirty();
       mergeServerIntoLocal(s);
       _serverVersion=remoteV;_lastEditor=s.editor||'';
+      if(!dirtyNow) _lastServerSig=cloudSig(); // in step with server → no needless push
       // Only re-render if the user isn't actively typing in a field
       if(!isTypingInField()) renderAll();
       setSync('<i class="ti ti-cloud-check"></i> Updated','var(--grn)',
@@ -1289,6 +1285,7 @@ async function cloudLoad(isPoll){
     }else{
       applyState(s);_serverVersion=remoteV;_lastEditor=s.editor||'';
       renderAll();
+      _lastServerSig=cloudSig(); // fresh from server → idle autosaves won't re-post
       const L=syncedLabel();setSync(L.msg,L.color,L.title);
     }
   }catch(e){
@@ -1298,11 +1295,30 @@ async function cloudLoad(isPoll){
 }
 
 // ── Push to server with version check; on conflict, re-pull then retry once ──
+// Saves within ~1s of a change: a short trailing debounce coalesces rapid edits,
+// but a hard 1000ms cap from the first pending change guarantees it goes out.
+
+// Signature of everything the server actually stores. We only POST when the
+// current data differs from what we last synced, so idle tabs and view-only
+// re-renders no longer hit the Apps Script endpoint every few seconds.
+let _lastServerSig=null;
+function cloudSig(){
+  try{
+    return JSON.stringify([
+      MASTER, MONTH_ADHOC, DATE_OVERRIDES, PROGRESS, REMARKS, MASTER_SLA_OVERRIDE,
+      [...MASTER_BLOCKED], MONTH_HIDDEN, HISTORY, SAVED_VIEWS, DONE_AT, DS_ITEMS, ALL_IAS, BIRTHDAYS
+    ]);
+  }catch(e){ return 'sig-error-'+Math.random(); } // on error, never dedupe (safe: will push)
+}
+let _firstDirtyAt=0;
 function cloudSave(){
   if(!cloudOn()) return;
   _localDirty=true;
+  const now=Date.now();
+  if(!_firstDirtyAt) _firstDirtyAt=now;
+  const wait=Math.max(0,Math.min(400,1000-(now-_firstDirtyAt)));
   clearTimeout(_syncTimer);
-  _syncTimer=setTimeout(()=>{doCloudSave(false);},900); // shorter window = smaller collision gap
+  _syncTimer=setTimeout(()=>{_firstDirtyAt=0;doCloudSave(false);},wait);
 }
 // True while the user is actively editing a text field, so a background merge
 // won't yank the DOM out from under them.
@@ -1314,6 +1330,9 @@ function isTypingInField(){
 }
 async function doCloudSave(isRetry){
   if(_syncBusy){_pendingSync=true;return;}
+  // Nothing actually changed since our last successful sync — don't hit the
+  // endpoint. Clear any no-op dirty flags (e.g. re-selecting the same value).
+  if(!isRetry && cloudSig()===_lastServerSig){ clearDirty(); return; }
   _syncBusy=true;
   setSync('<i class="ti ti-refresh"></i> Saving…');
   try{
@@ -1352,6 +1371,7 @@ async function doCloudSave(isRetry){
     else _serverVersion=payload.version;
     _lastEditor=payload.editor;
     clearDirty();
+    _lastServerSig=cloudSig();   // local and server now match — future idle saves skip
     const L=syncedLabel();setSync(L.msg,L.color,L.title);
   }catch(e){
     console.warn('Cloud save failed',e);
