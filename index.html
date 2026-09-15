@@ -80,7 +80,11 @@ header .theme-btn:hover{background:var(--bg2);border-color:var(--border)}
 .month-nav button{background:var(--bg1);border:0.5px solid var(--border);border-radius:var(--rs);width:28px;height:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text1);font-size:14px;transition:all .14s}
 .month-nav button:hover{background:var(--bg2)}
 .month-nav select{font-size:12px;padding:4px 8px;border:0.5px solid var(--border);border-radius:var(--rs);background:var(--bg1);color:var(--text0);height:28px;font-family:inherit;font-weight:500}
-.metrics{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin-bottom:1.1rem}
+/* Tiles on the left, the progress gauge as a narrow column on their right. The
+   tiles wrap to two rows of four so the block's height matches the gauge card. */
+.metrics-row{display:grid;grid-template-columns:1fr 186px;gap:9px;margin-bottom:1.1rem;align-items:stretch}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;align-content:start}
+.mc.mc-wide{grid-column:span 2}   /* seventh tile fills the row's trailing gap */
 @media(max-width:580px){.metrics{grid-template-columns:repeat(3,1fr)}}
 .mc{background:var(--bg1);border-radius:var(--r);padding:10px 12px;border:0.5px solid var(--border2);box-shadow:var(--sh);cursor:pointer;transition:all .14s}
 .mc:hover{box-shadow:var(--shm);border-color:var(--border)}
@@ -274,12 +278,10 @@ header .theme-btn:hover{background:var(--bg2);border-color:var(--border)}
 
 
 
-/* ── Cycle pulse: progress gauge + workload-per-IA, side by side ──────────────
-   Deliberately low-profile: this band is orientation, not the main event. It stays
-   two columns down to 640px and is sized so the deliverable list starts near the
-   fold rather than being pushed below it. */
-.pulse-row{display:grid;grid-template-columns:168px 1fr;gap:9px;margin-bottom:.85rem;align-items:stretch}
-.pulse-card{background:var(--bg1);border:0.5px solid var(--border2);border-radius:var(--r);box-shadow:var(--sh);padding:9px 12px 10px;min-width:0;display:flex;flex-direction:column}
+/* ── Cycle pulse: progress gauge, sitting beside the metric tiles ────────────
+   Deliberately low-profile: this card is orientation, not the main event. It is
+   sized so the deliverable list still starts near the fold. */
+.pulse-card{background:var(--bg1);border:0.5px solid var(--border2);border-radius:var(--r);box-shadow:var(--sh);padding:9px 12px 10px;min-width:0;height:100%;display:flex;flex-direction:column}
 .pulse-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
 .pulse-title{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3)}
 .pulse-head i{color:var(--text3);font-size:13px}
@@ -300,23 +302,9 @@ header .theme-btn:hover{background:var(--bg2);border-color:var(--border)}
 .mixlab b{color:var(--text1);font-weight:700;font-variant-numeric:tabular-nums}
 .mixlab .sw{width:7px;height:7px;border-radius:2px;display:inline-block}
 
-/* Workload — name, bar and total share one line so seven IAs stay compact */
-.pw-list{display:flex;flex-direction:column;gap:4px}
-.pw-row{display:flex;align-items:center;gap:8px;min-width:0}
-.pw-name{font-size:11px;font-weight:600;color:var(--text1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:66px;flex-shrink:0}
-.pw-rail{flex:1;height:7px;border-radius:4px;background:var(--bg0);box-shadow:inset 0 0 0 .5px var(--border2);overflow:hidden;min-width:0}
-.pw-fill{height:100%;display:flex;gap:2px;border-radius:4px;overflow:hidden;transition:width .45s cubic-bezier(.4,0,.2,1)}
-.pw-fill .seg{height:100%;border-radius:4px;min-width:0}
-.pw-tot{font-size:11px;font-weight:700;color:var(--text1);font-variant-numeric:tabular-nums;flex-shrink:0;display:inline-flex;align-items:baseline;gap:2px;width:58px;justify-content:flex-end}
-.pw-tot .pw-over{color:var(--red);font-weight:700;font-size:9px;margin-right:2px}
-.pw-tot .pw-unit{font-size:8px;font-weight:600;color:var(--text3);letter-spacing:.03em}
-.pw-tot .pw-cnt{font-size:9px;font-weight:600;color:var(--text3);margin-left:3px;padding-left:4px;border-left:0.5px solid var(--border2)}
-.pw-legend{display:flex;flex-wrap:wrap;align-items:center;gap:3px 10px;margin-top:7px;padding-top:6px;border-top:0.5px solid var(--border2);font-size:9px;color:var(--text3)}
-.pw-legend span{display:inline-flex;align-items:center;gap:4px}
-.pw-legend i.sw{width:7px;height:7px;border-radius:2px;display:inline-block}
-.pw-key{margin-left:auto}
 .pulse-empty{font-size:11px;color:var(--text3);padding:8px 0}
-@media(max-width:640px){.pulse-row{grid-template-columns:1fr}.pw-name{width:58px}}
+/* Narrow screens: the gauge drops below the tiles rather than squeezing them. */
+@media(max-width:760px){.metrics-row{grid-template-columns:1fr}.mc.mc-wide{grid-column:auto}}
 
 /* ── Workload view ── */
 .wl-grid{display:flex;flex-direction:column;gap:9px}
@@ -553,7 +541,7 @@ html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="da
 <div class="landing-hero">
   <div class="landing-copy">
     <div class="landing-kicker">Zanroo Malaysia · IA Team</div>
-    <h1>Deliverables, SLA health, and workload visibility in one place.</h1>
+    <h1>Deliverables, SLA health, and cycle progress in one place.</h1>
     <p>Track reporting cycles, monitor deadlines, and keep the team aligned without spreadsheet chaos.</p>
     <div class="landing-meta">
       <span><i class="ti ti-bolt"></i> Live SLA tracking</span>
@@ -597,8 +585,7 @@ html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="da
   </div>
 </div>
 <section id="ph-notice-area" aria-label="Public holiday notices"></section>
-<section id="metrics-area" aria-label="Reporting metrics"></section>
-<section id="pulse-area" aria-label="Cycle progress and team workload"></section>
+<section id="metrics-area" aria-label="Reporting metrics and cycle progress"></section>
 <section class="frow" id="filter-area" aria-label="Dashboard filters"></section>
 <div class="chip-row" id="chip-area" role="region" aria-label="Active filters"></div>
 <div id="sv-area"></div>
@@ -1825,6 +1812,7 @@ function renderMetrics(){
   const q=all.filter(i=>i.freq==='Quarterly'||i.freq==='Half Yearly').length;
   const ah=all.filter(i=>i.adhoc).length;
   document.getElementById('metrics-area').innerHTML=`
+  <div class="metrics-row">
   <div class="metrics">
     <div role="button" tabindex="0" class="mc${filterStatus==='All'?' active-filter':''}" data-fs="All"><div class="mv">${all.length}</div><div class="ml">Total</div></div>
     <div role="button" tabindex="0" class="mc${filterStatus==='To Do'?' active-filter':''}" data-fs="To Do"><div class="mv" style="color:var(--text2)">${todo}</div><div class="ml">To Do</div></div>
@@ -1832,7 +1820,9 @@ function renderMetrics(){
     <div role="button" tabindex="0" class="mc${filterStatus==='Done'?' active-filter':''}" data-fs="Done"><div class="mv" style="color:var(--grn)">${done}</div><div class="ml">Done</div></div>
     <div role="button" tabindex="0" class="mc${filterStatus==='Blocked'?' active-filter':''}" data-fs="Blocked"><div class="mv" style="color:var(--red)">${blk}</div><div class="ml">Blocked</div></div>
     <div role="button" tabindex="0" class="mc${filterType==='QBi'?' active-filter':''}" data-ft="QBi"><div class="mv" style="color:var(--pur)">${q}</div><div class="ml">Q / Biannual</div></div>
-    <div role="button" tabindex="0" class="mc${filterType==='Adhoc'?' active-filter':''}" data-ft="Adhoc"><div class="mv" style="color:var(--grn)">${ah}</div><div class="ml">Adhoc</div></div>
+    <div role="button" tabindex="0" class="mc mc-wide${filterType==='Adhoc'?' active-filter':''}" data-ft="Adhoc"><div class="mv" style="color:var(--grn)">${ah}</div><div class="ml">Adhoc</div></div>
+  </div>
+  <div id="pulse-area" aria-label="Cycle progress"></div>
   </div>`;
   document.querySelectorAll('.mc[data-fs]').forEach(mc=>{
     mc.setAttribute('aria-label','Filter by status: '+mc.dataset.fs);
@@ -1855,10 +1845,9 @@ function renderMetrics(){
 }
 
 // ── Cycle pulse ──────────────────────────────────────────────────────────────
-// Two paired widgets under the metric tiles: a half-donut gauge answering the
-// single question "how far through the cycle are we?", and a workload chart
-// answering "who is carrying it?". Both read the same unfiltered month set the
-// metric tiles use, so the numbers always agree with the row above them.
+// A half-donut gauge sitting beside the metric tiles, answering the single
+// question "how far through the cycle are we?". It reads the same unfiltered
+// month set the tiles use, so the numbers always agree with them.
 // Status colours are the app's own reserved tokens (Done/In progress/Blocked/
 // To do) — never recoloured per chart, and always paired with a label.
 const PULSE_STATUSES=[
@@ -1867,21 +1856,9 @@ const PULSE_STATUSES=[
   {k:'Blocked',    label:'Blocked',     color:'var(--red)'},
   {k:'To Do',      label:'To do',       color:'var(--bg3)'},
 ];
-// Workload is measured in effort points rather than deliverable count: a
-// quarterly report is a far bigger piece of work than an adhoc pull, so a head
-// count understates whoever is carrying the heavy reports. Adhoc 1, monthly 2,
-// quarterly 3 are the team's agreed anchors; the remaining frequencies are
-// slotted against them (Half Yearly rides with Quarterly, and the sub-monthly
-// cadences sit with Adhoc). Edit this table to re-weight the whole widget.
-const WORK_WEIGHTS={'Quarterly':3,'Half Yearly':3,'Monthly':2,'Bi-Weekly':1,'Weekly':1,'Daily':1,'Adhoc':1};
-function workWeight(it){
-  const w=WORK_WEIGHTS[it.freq];
-  return w===undefined?(it.adhoc?1:2):w;   // unknown cadence defaults to monthly effort
-}
-// weighted=true sums effort points; otherwise each deliverable counts as one.
-function pulseSplit(list,weighted){
+function pulseSplit(list){
   const c={};PULSE_STATUSES.forEach(s=>c[s.k]=0);
-  list.forEach(i=>{const p=getProgress(i.id);c[c[p]===undefined?'To Do':p]+=weighted?workWeight(i):1;});
+  list.forEach(i=>{const p=getProgress(i.id);c[c[p]===undefined?'To Do':p]+=1;});
   return c;
 }
 function pulseTip(c,total,unit){
@@ -1925,45 +1902,11 @@ function renderPulse(all){
     `<span style="display:inline-flex;align-items:center;gap:4px"><i class="sw" style="background:${s.color}"></i>${s.label} <b>${c[s.k]}</b></span>`
   ).join('');
 
-  const progressCard=`<div class="pulse-card" title="Share of this cycle's deliverables marked done">
+  host.innerHTML=`<div class="pulse-card" title="Share of this cycle's deliverables marked done">
     <div class="pulse-head"><div class="pulse-title">Progress</div><i class="ti ti-progress-check" aria-hidden="true"></i></div>
     ${total?gauge+`<div class="mixbar" title="${pulseTip(c,total)}">${pulseSegs(c,total)}</div>
     <div class="mixlab">${mixLabels}</div>`:`<div class="pulse-empty">Nothing in this cycle yet.</div>`}
   </div>`;
-
-  // Workload: bar length encodes each IA's share of the heaviest load in effort
-  // points, so the rows are comparable at a glance; the stack inside encodes
-  // status, also weighted, so a finished quarterly moves the bar as much as the
-  // work it took.
-  const people=[...new Set(all.map(i=>i.ia))]
-    .map(p=>{const list=all.filter(i=>i.ia===p);return {p,list,pts:list.reduce((n,i)=>n+workWeight(i),0)};})
-    .sort((a,b)=>b.pts-a.pts||(a.p<b.p?-1:1));
-  const maxLoad=Math.max(1,...people.map(x=>x.pts));
-  const rows=people.map(({p,list,pts})=>{
-    const pc=pulseSplit(list,true);
-    const over=list.filter(i=>urgencyOf(i)==='Overdue').length;
-    const tip=`${p} — ${pts} pts across ${list.length} deliverable${list.length!==1?'s':''} · ${pulseTip(pc,pts,'pt')}`;
-    return `<div class="pw-row" title="${tip}">
-      <div class="pw-name">${p}</div>
-      <div class="pw-rail" role="img" aria-label="${tip}">
-        <div class="pw-fill" style="width:${(pts/maxLoad*100).toFixed(1)}%">${pulseSegs(pc,pts,'pt')}</div>
-      </div>
-      <div class="pw-tot">${over?`<span class="pw-over" title="${over} overdue"><i class="ti ti-alert-triangle" style="font-size:9px" aria-hidden="true"></i>${over}</span>`:''}${pts}<span class="pw-unit">pts</span><span class="pw-cnt">${list.length}×</span></div>
-    </div>`;
-  }).join('');
-
-  const legend=`<div class="pw-legend">${PULSE_STATUSES.map(s=>
-    `<span><i class="sw" style="background:${s.color}"></i>${s.label}</span>`).join('')}
-    <span class="pw-key" title="Effort points per deliverable by reporting frequency: quarterly and biannual 3, monthly 2, adhoc / weekly / bi-weekly / daily 1">
-      <i class="ti ti-scale-outline" style="font-size:10px" aria-hidden="true"></i> Q&amp;Bi 3 · Mo 2 · other 1
-    </span></div>`;
-
-  const workloadCard=`<div class="pulse-card">
-    <div class="pulse-head"><div class="pulse-title">Workload · weighted effort per IA</div><i class="ti ti-users" aria-hidden="true"></i></div>
-    ${people.length?`<div class="pw-list">${rows}</div>${legend}`:`<div class="pulse-empty">Nothing assigned yet.</div>`}
-  </div>`;
-
-  host.innerHTML=`<div class="pulse-row">${progressCard}${workloadCard}</div>`;
 }
 
 function renderFilters(items){
