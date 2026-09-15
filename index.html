@@ -105,6 +105,8 @@ header .theme-btn:hover{background:var(--bg2);border-color:var(--border)}
 .dpill.past-pill{background:var(--red-bg);color:var(--red);border-color:var(--red)50}
 .dpill.q-pill{background:var(--pur-bg);color:var(--pur);border-color:var(--pur)40}
 .dpill.hn-pill{background:var(--orn-bg);color:var(--orn);border-color:var(--orn)40}
+.dpill.done-pill{background:var(--bg1);color:var(--text3);border-color:var(--border2);box-shadow:none;font-weight:500}
+.dsep{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--text3);margin:1.4rem 0 .7rem;padding-top:.7rem;border-top:0.5px dashed var(--border2)}
 .dwd{font-size:10px;color:var(--text3);font-family:'Consolas','Segoe UI',monospace}
 .dline{flex:1;height:1px;background:var(--border2)}
 .cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:7px}
@@ -156,8 +158,19 @@ header .theme-btn:hover{background:var(--bg2);border-color:var(--border)}
 .psel.done{background:var(--grn-bg);color:var(--grn);border-color:var(--grn)40}
 .psel.inp{background:var(--acc-bg);color:var(--acc);border-color:var(--acc)40}
 .psel.blk{background:var(--red-bg);color:var(--red);border-color:var(--red)50}
-.date-display{font-size:11px;color:var(--text2);cursor:pointer;display:inline-flex;align-items:center;gap:3px;white-space:nowrap}
-.date-display:hover{color:var(--acc)}
+/* Due date is editable on every card: submission often lands off the SLA date.
+   Styled as a real control (dashed affordance + pencil) so it reads as clickable. */
+.date-display{font-size:11px;color:var(--text2);cursor:pointer;display:inline-flex;align-items:center;gap:3px;white-space:nowrap;
+  padding:1px 6px;margin-left:-6px;border-radius:var(--rs);border:0.5px dashed var(--border);background:transparent;transition:all .12s}
+.date-display:hover,.date-display:focus-visible{color:var(--acc);border-color:var(--acc);border-style:solid;background:var(--acc-bg);outline:none}
+.date-display .date-pen{opacity:.45;transition:opacity .12s}
+.date-display:hover .date-pen,.date-display:focus-visible .date-pen{opacity:1}
+.date-display.is-moved{color:var(--amb);border-color:var(--amb)60;border-style:solid;background:var(--amb-bg)}
+.date-display.is-moved:hover{color:var(--amb);border-color:var(--amb)}
+.date-moved{font-size:9px;font-weight:700;background:var(--amb);color:#fff;padding:0 4px;border-radius:2px;letter-spacing:.01em}
+.date-reset{border:0.5px solid var(--border);background:var(--bg1);color:var(--text3);border-radius:var(--rs);cursor:pointer;
+  width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;margin-left:-2px;transition:all .12s}
+.date-reset:hover{color:var(--amb);border-color:var(--amb);background:var(--amb-bg)}
 .date-input{font-size:11px;padding:1px 5px;border:0.5px solid var(--acc);border-radius:var(--rs);background:var(--acc-bg);color:var(--acc);font-family:'Consolas','Segoe UI',monospace;height:22px;display:none}
 .date-input.show{display:inline-block}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
@@ -260,6 +273,50 @@ header .theme-btn:hover{background:var(--bg2);border-color:var(--border)}
 
 
 
+
+/* ── Cycle pulse: progress gauge + workload-per-IA, side by side ──────────────
+   Deliberately low-profile: this band is orientation, not the main event. It stays
+   two columns down to 640px and is sized so the deliverable list starts near the
+   fold rather than being pushed below it. */
+.pulse-row{display:grid;grid-template-columns:168px 1fr;gap:9px;margin-bottom:.85rem;align-items:stretch}
+.pulse-card{background:var(--bg1);border:0.5px solid var(--border2);border-radius:var(--r);box-shadow:var(--sh);padding:9px 12px 10px;min-width:0;display:flex;flex-direction:column}
+.pulse-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
+.pulse-title{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3)}
+.pulse-head i{color:var(--text3);font-size:13px}
+
+/* Gauge */
+.gauge-wrap{display:flex;align-items:center;justify-content:center;margin:0 0 7px}
+.gauge-inner{position:relative;width:100%;max-width:118px}
+.gauge-svg{width:100%;height:auto;display:block;overflow:visible}
+.gauge-track{fill:none;stroke:var(--bg3);stroke-width:13;stroke-linecap:round}
+.gauge-fill{fill:none;stroke:var(--grn);stroke-width:13;stroke-linecap:round;transition:stroke-dashoffset .5s cubic-bezier(.4,0,.2,1)}
+/* Sits in the donut hole: the arc's baseline is at 72/84 of the viewBox height. */
+.gauge-cap{position:absolute;left:0;right:0;bottom:11%;text-align:center;pointer-events:none}
+.gauge-pct{font-size:21px;font-weight:700;letter-spacing:-.03em;line-height:1;color:var(--text0);font-variant-numeric:tabular-nums}
+.gauge-of{font-size:9px;color:var(--text2);margin-top:1px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.mixbar{height:7px;border-radius:4px;background:var(--bg0);box-shadow:inset 0 0 0 .5px var(--border2);overflow:hidden;display:flex;gap:2px;margin-top:auto}
+.mixbar .seg{height:100%;border-radius:4px;min-width:0}
+.mixlab{display:flex;flex-wrap:wrap;gap:2px 8px;margin-top:6px;font-size:9px;color:var(--text3);line-height:1.4}
+.mixlab b{color:var(--text1);font-weight:700;font-variant-numeric:tabular-nums}
+.mixlab .sw{width:7px;height:7px;border-radius:2px;display:inline-block}
+
+/* Workload — name, bar and total share one line so seven IAs stay compact */
+.pw-list{display:flex;flex-direction:column;gap:4px}
+.pw-row{display:flex;align-items:center;gap:8px;min-width:0}
+.pw-name{font-size:11px;font-weight:600;color:var(--text1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:66px;flex-shrink:0}
+.pw-rail{flex:1;height:7px;border-radius:4px;background:var(--bg0);box-shadow:inset 0 0 0 .5px var(--border2);overflow:hidden;min-width:0}
+.pw-fill{height:100%;display:flex;gap:2px;border-radius:4px;overflow:hidden;transition:width .45s cubic-bezier(.4,0,.2,1)}
+.pw-fill .seg{height:100%;border-radius:4px;min-width:0}
+.pw-tot{font-size:11px;font-weight:700;color:var(--text1);font-variant-numeric:tabular-nums;flex-shrink:0;display:inline-flex;align-items:baseline;gap:2px;width:58px;justify-content:flex-end}
+.pw-tot .pw-over{color:var(--red);font-weight:700;font-size:9px;margin-right:2px}
+.pw-tot .pw-unit{font-size:8px;font-weight:600;color:var(--text3);letter-spacing:.03em}
+.pw-tot .pw-cnt{font-size:9px;font-weight:600;color:var(--text3);margin-left:3px;padding-left:4px;border-left:0.5px solid var(--border2)}
+.pw-legend{display:flex;flex-wrap:wrap;align-items:center;gap:3px 10px;margin-top:7px;padding-top:6px;border-top:0.5px solid var(--border2);font-size:9px;color:var(--text3)}
+.pw-legend span{display:inline-flex;align-items:center;gap:4px}
+.pw-legend i.sw{width:7px;height:7px;border-radius:2px;display:inline-block}
+.pw-key{margin-left:auto}
+.pulse-empty{font-size:11px;color:var(--text3);padding:8px 0}
+@media(max-width:640px){.pulse-row{grid-template-columns:1fr}.pw-name{width:58px}}
 
 /* ── Workload view ── */
 .wl-grid{display:flex;flex-direction:column;gap:9px}
@@ -541,6 +598,7 @@ html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="da
 </div>
 <section id="ph-notice-area" aria-label="Public holiday notices"></section>
 <section id="metrics-area" aria-label="Reporting metrics"></section>
+<section id="pulse-area" aria-label="Cycle progress and team workload"></section>
 <section class="frow" id="filter-area" aria-label="Dashboard filters"></section>
 <div class="chip-row" id="chip-area" role="region" aria-label="Active filters"></div>
 <div id="sv-area"></div>
@@ -1584,6 +1642,16 @@ function urgencyOf(it){
   if(it.date<=endOfWeekISO()) return 'Week';         // today → end of this week
   return 'Later';
 }
+// Describes an overridden due date relative to its SLA date, e.g. "2d early".
+// Used on the card badge so a moved date says which way it moved, not just that
+// it was touched.
+function slaShift(it){
+  if(!it.computed||!it.date) return 'moved';
+  const a=new Date(it.computed+'T00:00:00'), b=new Date(it.date+'T00:00:00');
+  const d=Math.round((b-a)/86400000);
+  if(d===0) return 'on SLA';
+  return Math.abs(d)+'d '+(d<0?'early':'late');
+}
 function cardExtraCls(it){return it.quarterly||(it.freq==='Quarterly')?'q-card':it.halfyearly||(it.freq==='Half Yearly')?'hn-card':it.adhoc?'adhoc-card':'';}
 function tagHtml(it){
   if(it.adhoc) return '<span class="adtag">Adhoc</span>';
@@ -1601,7 +1669,8 @@ function buildCard(it, showIAEdit=true){
   const dsHtml=ds?`<div class="dsub-badge"><i class="ti ti-database-import" style="font-size:9px"></i> DA sub: ${fmtShort(ds.submissionDate)}</div>`:'';
   const iaOpts=ALL_IAS.map(a=>`<option${a===it.ia?' selected':''}>${a}</option>`).join('');
   const rmk=getRemarks(it.id);
-  const hasOverride=!!getDateOverride(it.id);
+  // An override that lands back on the SLA date is not a move — no badge, no reset.
+  const hasOverride=!!getDateOverride(it.id)&&!!it.computed&&it.date!==it.computed;
   const iaSection=showIAEdit?`
     <div class="ia-row">
       <span class="ia-chip" id="chip-${it.id}"><i class="ti ti-user" style="font-size:10px"></i> ${it.ia}</span>
@@ -1631,9 +1700,14 @@ function buildCard(it, showIAEdit=true){
     <textarea class="card-remarks" data-id="${it.id}" placeholder="Remarks…" rows="2">${rmk}</textarea>
     ${overdue?`<div style="font-size:10px;color:var(--red);font-weight:600;margin-top:5px;display:flex;align-items:center;gap:3px"><i class="ti ti-alert-triangle" style="font-size:10px"></i> Overdue</div>`:''}
     <div class="cbot">
-      <span class="date-display" data-id="${it.id}" title="Click to override date" style="${hasOverride?'color:var(--amb)':''}">
-        <i class="ti ti-calendar" style="font-size:10px"></i> ${fmtDate(it.date)}${hasOverride?' <span style="font-size:9px;background:var(--amb-bg);color:var(--amb);padding:0 4px;border-radius:2px">edited</span>':''} <i class="ti ti-pencil" style="font-size:9px;opacity:.5"></i>
+      <span class="date-display${hasOverride?' is-moved':''}" data-id="${it.id}" role="button" tabindex="0"
+            title="${hasOverride?`Submitting ${fmtDate(it.date)} — SLA date is ${fmtDate(it.computed)}. Click to change.`:'Click to change the submission date'}"
+            aria-label="Due ${fmtDate(it.date)}${hasOverride?`, moved from SLA date ${fmtDate(it.computed)}`:''}. Click to change.">
+        <i class="ti ti-calendar" style="font-size:10px" aria-hidden="true"></i> ${fmtDate(it.date)}
+        ${hasOverride?`<span class="date-moved" title="Moved ${slaShift(it)} the ${fmtDate(it.computed)} SLA date">${slaShift(it)}</span>`:''}
+        <i class="ti ti-pencil date-pen" style="font-size:9px" aria-hidden="true"></i>
       </span>
+      ${hasOverride?`<button class="date-reset" data-id="${it.id}" title="Reset to the ${fmtDate(it.computed)} SLA date" aria-label="Reset to SLA date ${fmtDate(it.computed)}"><i class="ti ti-arrow-back-up" style="font-size:11px" aria-hidden="true"></i></button>`:''}
       <input type="date" class="date-input" data-id="${it.id}" value="${it.date||''}">
       <select class="psel ${pcls(pg)}" data-id="${it.id}">
         ${['To Do','In Progress','Done','Blocked'].map(s=>`<option${s===pg?' selected':''}>${s}</option>`).join('')}
@@ -1648,10 +1722,23 @@ function bindCardEvents(){
     sel.addEventListener('change',e=>{setProgress(e.target.dataset.id,e.target.value);e.target.className='psel '+pcls(e.target.value);renderMetrics();});
   });
   document.querySelectorAll('.date-display').forEach(el=>{
-    el.addEventListener('click',()=>{el.style.display='none';const inp=document.querySelector(`.date-input[data-id="${el.dataset.id}"]`);if(inp){inp.classList.add('show');inp.focus();}});
+    const open=()=>{el.style.display='none';const inp=document.querySelector(`.date-input[data-id="${el.dataset.id}"]`);
+      if(inp){inp.classList.add('show');inp.focus();if(inp.showPicker) try{inp.showPicker();}catch(e){}}};
+    el.addEventListener('click',open);
+    el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}});
+  });
+  document.querySelectorAll('.date-reset').forEach(btn=>{
+    btn.addEventListener('click',e=>{
+      e.stopPropagation();
+      const id=btn.dataset.id, prev=getDateOverride(id);
+      const rec=generateItems().items.find(i=>i.id===id);
+      setDateOverride(id,null);renderMain();renderMetrics();
+      showToast(`Due date reset to the <strong>${rec?fmtDate(rec.computed):'SLA'}</strong> SLA date`,
+        ()=>{setDateOverride(id,prev);renderMain();renderMetrics();showToast('Reverted',null,2200);});
+    });
   });
   document.querySelectorAll('.date-input').forEach(inp=>{
-    inp.addEventListener('change',e=>{const v=e.target.value;setDateOverride(e.target.dataset.id,v||null);renderMain();});
+    inp.addEventListener('change',e=>{const v=e.target.value;setDateOverride(e.target.dataset.id,v||null);renderMain();renderMetrics();});
     inp.addEventListener('blur',e=>{e.target.classList.remove('show');const d=document.querySelector(`.date-display[data-id="${e.target.dataset.id}"]`);if(d) d.style.display='';});
   });
   document.querySelectorAll('.ia-edit-btn').forEach(btn=>{
@@ -1764,6 +1851,119 @@ function renderMetrics(){
       renderMetrics();renderMain();
     });
   });
+  renderPulse(all);
+}
+
+// ── Cycle pulse ──────────────────────────────────────────────────────────────
+// Two paired widgets under the metric tiles: a half-donut gauge answering the
+// single question "how far through the cycle are we?", and a workload chart
+// answering "who is carrying it?". Both read the same unfiltered month set the
+// metric tiles use, so the numbers always agree with the row above them.
+// Status colours are the app's own reserved tokens (Done/In progress/Blocked/
+// To do) — never recoloured per chart, and always paired with a label.
+const PULSE_STATUSES=[
+  {k:'Done',       label:'Done',        color:'var(--grn)'},
+  {k:'In Progress',label:'In progress', color:'var(--acc)'},
+  {k:'Blocked',    label:'Blocked',     color:'var(--red)'},
+  {k:'To Do',      label:'To do',       color:'var(--bg3)'},
+];
+// Workload is measured in effort points rather than deliverable count: a
+// quarterly report is a far bigger piece of work than an adhoc pull, so a head
+// count understates whoever is carrying the heavy reports. Adhoc 1, monthly 2,
+// quarterly 3 are the team's agreed anchors; the remaining frequencies are
+// slotted against them (Half Yearly rides with Quarterly, and the sub-monthly
+// cadences sit with Adhoc). Edit this table to re-weight the whole widget.
+const WORK_WEIGHTS={'Quarterly':3,'Half Yearly':3,'Monthly':2,'Bi-Weekly':1,'Weekly':1,'Daily':1,'Adhoc':1};
+function workWeight(it){
+  const w=WORK_WEIGHTS[it.freq];
+  return w===undefined?(it.adhoc?1:2):w;   // unknown cadence defaults to monthly effort
+}
+// weighted=true sums effort points; otherwise each deliverable counts as one.
+function pulseSplit(list,weighted){
+  const c={};PULSE_STATUSES.forEach(s=>c[s.k]=0);
+  list.forEach(i=>{const p=getProgress(i.id);c[c[p]===undefined?'To Do':p]+=weighted?workWeight(i):1;});
+  return c;
+}
+function pulseTip(c,total,unit){
+  const u=unit?' '+unit:'';
+  return PULSE_STATUSES.filter(s=>c[s.k]).map(s=>`${c[s.k]}${u} ${s.label.toLowerCase()}`).join(' · ')+` — ${total}${u} total`;
+}
+function pulseSegs(c,total,unit){
+  // 2px surface gaps between fills come from the flex gap on the parent; each
+  // segment keeps its own rounded ends so short runs stay legible.
+  const u=unit?' '+unit:'';
+  return PULSE_STATUSES.filter(s=>c[s.k]>0).map(s=>
+    `<div class="seg" style="flex:${c[s.k]} 1 0;background:${s.color}" title="${c[s.k]}${u} ${s.label.toLowerCase()} of ${total}${u}"></div>`
+  ).join('');
+}
+
+function renderPulse(all){
+  const host=document.getElementById('pulse-area');
+  if(!host) return;
+  const total=all.length;
+  const c=pulseSplit(all);
+  const pct=total?Math.round(c['Done']/total*100):0;
+
+  // Half-donut: 180° arc, r=60, drawn left→right. Dash offset carries the value.
+  const R=60,CX=72,CY=72,LEN=Math.PI*R;
+  const gauge=`<div class="gauge-wrap"><div class="gauge-inner">
+    <svg class="gauge-svg" viewBox="0 0 144 84" role="img"
+         aria-label="Cycle progress: ${pct} percent done, ${c['Done']} of ${total} deliverables">
+      <path class="gauge-track" d="M ${CX-R} ${CY} A ${R} ${R} 0 0 1 ${CX+R} ${CY}"/>
+      <path class="gauge-fill" d="M ${CX-R} ${CY} A ${R} ${R} 0 0 1 ${CX+R} ${CY}"
+            stroke-dasharray="${LEN.toFixed(1)}" stroke-dashoffset="${(LEN*(1-pct/100)).toFixed(1)}"
+            style="${pct===0?'opacity:0':''}"/>
+    </svg>
+    <div class="gauge-cap">
+      <div class="gauge-pct">${pct}<span style="font-size:12px;font-weight:600;color:var(--text2)">%</span></div>
+      <div class="gauge-of"><b style="color:var(--text1);font-weight:700">${c['Done']}</b>/${total} done</div>
+    </div>
+  </div></div>`;
+
+  // Only non-zero statuses get a label chip, so the strip stays to two short rows.
+  const mixLabels=PULSE_STATUSES.filter(s=>c[s.k]).map(s=>
+    `<span style="display:inline-flex;align-items:center;gap:4px"><i class="sw" style="background:${s.color}"></i>${s.label} <b>${c[s.k]}</b></span>`
+  ).join('');
+
+  const progressCard=`<div class="pulse-card" title="Share of this cycle's deliverables marked done">
+    <div class="pulse-head"><div class="pulse-title">Progress</div><i class="ti ti-progress-check" aria-hidden="true"></i></div>
+    ${total?gauge+`<div class="mixbar" title="${pulseTip(c,total)}">${pulseSegs(c,total)}</div>
+    <div class="mixlab">${mixLabels}</div>`:`<div class="pulse-empty">Nothing in this cycle yet.</div>`}
+  </div>`;
+
+  // Workload: bar length encodes each IA's share of the heaviest load in effort
+  // points, so the rows are comparable at a glance; the stack inside encodes
+  // status, also weighted, so a finished quarterly moves the bar as much as the
+  // work it took.
+  const people=[...new Set(all.map(i=>i.ia))]
+    .map(p=>{const list=all.filter(i=>i.ia===p);return {p,list,pts:list.reduce((n,i)=>n+workWeight(i),0)};})
+    .sort((a,b)=>b.pts-a.pts||(a.p<b.p?-1:1));
+  const maxLoad=Math.max(1,...people.map(x=>x.pts));
+  const rows=people.map(({p,list,pts})=>{
+    const pc=pulseSplit(list,true);
+    const over=list.filter(i=>urgencyOf(i)==='Overdue').length;
+    const tip=`${p} — ${pts} pts across ${list.length} deliverable${list.length!==1?'s':''} · ${pulseTip(pc,pts,'pt')}`;
+    return `<div class="pw-row" title="${tip}">
+      <div class="pw-name">${p}</div>
+      <div class="pw-rail" role="img" aria-label="${tip}">
+        <div class="pw-fill" style="width:${(pts/maxLoad*100).toFixed(1)}%">${pulseSegs(pc,pts,'pt')}</div>
+      </div>
+      <div class="pw-tot">${over?`<span class="pw-over" title="${over} overdue"><i class="ti ti-alert-triangle" style="font-size:9px" aria-hidden="true"></i>${over}</span>`:''}${pts}<span class="pw-unit">pts</span><span class="pw-cnt">${list.length}×</span></div>
+    </div>`;
+  }).join('');
+
+  const legend=`<div class="pw-legend">${PULSE_STATUSES.map(s=>
+    `<span><i class="sw" style="background:${s.color}"></i>${s.label}</span>`).join('')}
+    <span class="pw-key" title="Effort points per deliverable by reporting frequency: quarterly and biannual 3, monthly 2, adhoc / weekly / bi-weekly / daily 1">
+      <i class="ti ti-scale-outline" style="font-size:10px" aria-hidden="true"></i> Q&amp;Bi 3 · Mo 2 · other 1
+    </span></div>`;
+
+  const workloadCard=`<div class="pulse-card">
+    <div class="pulse-head"><div class="pulse-title">Workload · weighted effort per IA</div><i class="ti ti-users" aria-hidden="true"></i></div>
+    ${people.length?`<div class="pw-list">${rows}</div>${legend}`:`<div class="pulse-empty">Nothing assigned yet.</div>`}
+  </div>`;
+
+  host.innerHTML=`<div class="pulse-row">${progressCard}${workloadCard}</div>`;
 }
 
 function renderFilters(items){
@@ -1909,19 +2109,36 @@ function renderDeadlines(){
 
   const groups={};
   datedRows.forEach(it=>{const k=it.date||'TBC';if(!groups[k])groups[k]=[];groups[k].push(it);});
-  const keys=Object.keys(groups).sort((a,b)=>a==='TBC'?1:b==='TBC'?-1:a<b?-1:1);
+  // Day groups are ordered so the page opens on what still needs doing: days that
+  // still hold overdue work first (oldest first), then today, then the rest of the
+  // month. Past days whose items are all done sink below the upcoming ones, and
+  // TBC stays last.
+  const tISO=todayISO();
+  const dayOverdue=k=>k!=='TBC'&&k<tISO&&groups[k].some(i=>urgencyOf(i)==='Overdue');
+  const dayRank=k=>k==='TBC'?4:dayOverdue(k)?0:k===tISO?1:k>tISO?2:3;
+  const keys=Object.keys(groups).sort((a,b)=>{
+    const ra=dayRank(a),rb=dayRank(b);
+    if(ra!==rb) return ra-rb;
+    return a<b?-1:a>b?1:0;
+  });
   const wdMap=buildWDMap(viewYear,viewMonth);
+  let prevRank=null;
   const html=keys.map(key=>{
     const its=groups[key];
+    const rank=dayRank(key);
+    const sep=(rank===3&&prevRank!==null&&prevRank!==3)
+      ? `<div class="dsep"><i class="ti ti-check" style="font-size:11px"></i> Earlier this month · nothing outstanding</div>` : '';
+    prevRank=rank;
     const wdNum=wdMap.map[key];const wdStr=wdNum?`WD${wdNum}`:'';
     const hasQ=its.some(i=>i.freq==='Quarterly'||i.freq==='Half Yearly');
     let pillCls=hasQ?(its.some(i=>i.freq==='Half Yearly')?'hn-pill':'q-pill'):'';
-    if(key===todayISO()) pillCls='today-pill';
-    else if(key!=='TBC'&&isPast(key)) pillCls='past-pill';
+    if(key===tISO) pillCls='today-pill';
+    else if(rank===0) pillCls='past-pill';
+    else if(rank===3) pillCls='done-pill';
     const head=key==='TBC'?`<span class="dpill" style="color:var(--amb);border-color:var(--amb)40"><i class="ti ti-clock"></i> TBC</span>`
-      :`<span class="dpill ${pillCls}"><i class="ti ti-calendar-event" style="font-size:12px"></i>${fmtDate(key)}</span>`;
+      :`<span class="dpill ${pillCls}"><i class="ti ti-calendar-event" style="font-size:12px"></i>${key===tISO?'Today · ':''}${fmtDate(key)}</span>`;
     const extras=[wdStr?`<span class="dwd">${wdStr}</span>`:'',hasQ?`<span style="font-size:10px;background:${its.some(i=>i.freq==='Half Yearly')?'var(--orn-bg)':'var(--pur-bg)'};color:${its.some(i=>i.freq==='Half Yearly')?'var(--orn)':'var(--pur)'};padding:2px 7px;border-radius:3px;font-weight:600">${its.some(i=>i.freq==='Half Yearly')?'Biannual':'Quarterly'}</span>`:''].filter(Boolean).join('');
-    return `<div class="dday"><div class="dhead">${head}${extras}<div class="dline"></div></div><div class="cgrid">${its.map(it=>buildCard(it,true)).join('')}</div></div>`;
+    return sep+`<div class="dday"><div class="dhead">${head}${extras}<div class="dline"></div></div><div class="cgrid">${its.map(it=>buildCard(it,true)).join('')}</div></div>`;
   }).join('');
   const body=datedRows.length?html:`<div class="empty-msg">
     <div style="margin-bottom:10px">No deliverables match your filters</div>

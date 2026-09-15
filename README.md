@@ -1,24 +1,29 @@
 # IA Tracker Dashboard
 
-A static internal reporting dashboard for team IA deliverables, SLA visibility, and month-based planning.
+A static internal dashboard for the Zanroo Malaysia Insight Analysts team to track report deliverables, deadlines, SLA health, and workload.
 
-## Project structure
-
-- `index.html` — main dashboard UI
-- `config.js` — deployment configuration for the Google Apps Script endpoint
-- `google-apps-script.gs` — Apps Script backend for saving state to Google Sheets
-- `CNAME.txt` — optional custom domain configuration
-
-## Local run
+## Run locally
 
 ```bash
 npm start
 ```
 
-Then open http://localhost:8000 in a browser.
+Then open http://localhost:8000. If that port is busy, run `python3 -m http.server 8124`.
 
-## Notes
+## Project files
 
-- The dashboard can run locally without the backend by leaving `SHEETS_API_URL` empty in `config.js`.
-- For shared team editing, deploy the Apps Script in `google-apps-script.gs` and paste the `/exec` URL into `config.js`.
-- The Apps Script uses a field-level merge strategy to reduce overwrites during concurrent edits.
+- `index.html` - dashboard UI
+- `config.js` - Google Apps Script endpoint configuration
+- `google-apps-script.gs` - Google Sheets persistence backend
+- `DEPLOYMENT.md` - launch and rollback checklist
+- `scripts/build-check.js` - static build validation
+- `scripts/smoke-test.js` - local HTTP smoke test
+
+## Verification
+
+```bash
+npm test
+npm run build
+```
+
+The dashboard falls back to local browser storage when `SHEETS_API_URL` is empty. Shared editing requires the deployed `/exec` URL in `config.js`.
